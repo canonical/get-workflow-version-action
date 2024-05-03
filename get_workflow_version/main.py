@@ -80,14 +80,36 @@ def main(
     —instead of the repository of the caller workflow—
     it needs to know what version it was called with.
     """
+    headers = {
+        "Accept": "application/vnd.github+json",
+        "X-GitHub-Api-Version": "2022-11-28",
+    }
+    token = os.environ.get("GH_TOKEN")
+    if token:
+        headers["Authorization"] = f"Bearer {token}"
     response = requests.get(
         f"{github_api_url}/repos/{caller_repository}/actions/runs/{caller_run_id}",
-        headers={
-            "Accept": "application/vnd.github+json",
-            "X-GitHub-Api-Version": "2022-11-28",
-        },
+        headers=headers,
     )
-    response.raise_for_status()
+    try:
+        response.raise_for_status()
+    except requests.HTTPError as exception:
+        if exception.response.status_code == 404:
+            response = requests.get(
+                f"{github_api_url}/repos/{caller_repository}", headers=headers
+            )
+            if response.status_code == 404:
+                if token:
+                    raise Exception(
+                        f"{caller_repository=} not found. Check if `github-token` input has correct permissions"
+                    )
+                raise Exception(
+                    f"{caller_repository=} not found. If repository is private, pass `github-token` input to authenticate to GitHub"
+                )
+            raise Exception(
+                f"Workflow run not found. Check if {caller_run_id=} is valid"
+            )
+        raise
     all_workflows = [
         ReusableWorkflow.from_github_api(**workflow)
         for workflow in response.json()["referenced_workflows"]

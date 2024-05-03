@@ -7,6 +7,23 @@ inputs:
   file-name:
     description: Name of reusable workflow file (e.g. "build_charm.yaml")
     required: true
+  github-token:
+    description: |
+      GitHub token
+      
+      Required for private repositories (for GitHub API call)
+      
+      Pass `secrets.GITHUB_TOKEN` context to this input
+      (https://docs.github.com/en/actions/learn-github-actions/contexts#secrets-context)
+      
+      The job where this action is called needs
+      ```
+      permissions:
+        actions: read
+      ```
+      
+      https://docs.github.com/en/actions/security-guides/automatic-token-authentication
+    required: false
 outputs:
   sha:
     description: Commit sha of reusable workflow
@@ -21,3 +38,5 @@ runs:
       id: get-version
       shell: bash
       run: get-workflow-version '${{ github.repository }}' '${{ github.run_id }}' '${{ inputs.repository-name }}' '${{ inputs.file-name }}' '${{ github.api_url }}'
+      env:
+        GH_TOKEN: ${{ inputs.github-token }}
