@@ -1,12 +1,17 @@
 [tool.poetry]
 name = "get-workflow-version"
 version = "0.1.0"
-description = ""
+description = "Get commit SHA that GitHub Actions reusable workflow was called with"
 authors = ["Carl Csaposs <carl.csaposs@canonical.com>"]
 readme = "README.md"
 
+[tool.poetry.scripts]
+get-workflow-version = "get_workflow_version.main:app"
+
 [tool.poetry.dependencies]
 python = "^3.10"
+typer = "^0.12.3"
+requests = "^2.31.0"
 
 
 [build-system]

@@ -1,0 +1,23 @@
+name: Get reusable workflow version
+description: Get commit SHA that GitHub Actions reusable workflow was called with
+inputs:
+  repository-name:
+    description: Name of reusable workflow repository (e.g. "canonical/data-platform-workflows")
+    required: true
+  file-name:
+    description: Name of reusable workflow file (e.g. "build_charm.yaml")
+    required: true
+outputs:
+  sha:
+    description: Commit SHA of reusable workflow
+    value: ${{ steps.get-version.outputs.sha }}
+runs:
+  using: composite
+  steps:
+    - name: Install CLI
+      shell: bash
+      run: pipx install '${{ github.action_path }}'
+    - name: Get reusable workflow version
+      id: get-version
+      shell: bash
+      run: get-workflow-version '${{ github.repository }}' '${{ github.run_id }}' '${{ inputs.repository-name }}' '${{ inputs.file-name }}' '${{ github.api_url }}'
