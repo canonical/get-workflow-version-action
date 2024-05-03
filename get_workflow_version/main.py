@@ -94,7 +94,12 @@ def main(
     try:
         response.raise_for_status()
     except requests.HTTPError as exception:
-        if exception.response.status_code == 404:
+        if exception.response.status_code == 403:
+            raise Exception(
+                "Ensure that GitHub job has `permissions: actions: read`. GitHub API call 403 forbidden\n"
+                "https://docs.github.com/en/actions/security-guides/automatic-token-authentication#modifying-the-permissions-for-the-github_token"
+            )
+        elif exception.response.status_code == 404:
             response = requests.get(
                 f"{github_api_url}/repos/{caller_repository}", headers=headers
             )
