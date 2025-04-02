@@ -21,7 +21,7 @@ jobs:
     steps:
       - name: Get workflow version
         id: workflow-version
-        uses: canonical/get-workflow-version-action@v1
+        canonical/get-workflow-version-action@88281a62e96e1c0ef4df30352ae0668a9f3e3369 # v1.0.1
         with:
           # Repository where reusable workflow is located
           repository-name: canonical/data-platform-workflows
