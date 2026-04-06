@@ -33,10 +33,17 @@ runs:
   steps:
     - name: Install CLI
       shell: bash
-      run: pipx install '${{ github.action_path }}'
+      run: pipx install "${VAR_ACTION_PATH}"
+      env:
+        VAR_ACTION_PATH: ${{ github.action_path }}
     - name: Get reusable workflow version
       id: get-version
       shell: bash
-      run: get-workflow-version '${{ github.repository }}' '${{ github.run_id }}' '${{ inputs.repository-name }}' '${{ inputs.file-name }}' '${{ github.api_url }}'
+      run: get-workflow-version "${VAR_REPOSITORY}" "${VAR_RUN_ID}" "${VAR_REPOSITORY_NAME}" "${VAR_FILE_NAME}" "${VAR_API_URL}"
       env:
         GH_TOKEN: ${{ inputs.github-token }}
+        VAR_REPOSITORY: ${{ github.repository }}
+        VAR_RUN_ID: ${{ github.run_id }}
+        VAR_REPOSITORY_NAME: ${{ inputs.repository-name }}
+        VAR_FILE_NAME: ${{ inputs.file-name }}
+        VAR_API_URL: ${{ github.api_url }}

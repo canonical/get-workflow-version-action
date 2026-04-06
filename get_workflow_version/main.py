@@ -2,10 +2,10 @@ import dataclasses
 import os
 import pathlib
 import re
+import typing
 
 import requests
 import typer
-from typing_extensions import Annotated
 
 # Do not show locals to avoid displaying `GH_TOKEN`
 app = typer.Typer(pretty_exceptions_show_locals=False)
@@ -41,27 +41,27 @@ def parse_github_api_url(value: str):
 
 @app.command()
 def main(
-    caller_repository: Annotated[
+    caller_repository: typing.Annotated[
         str,
         typer.Argument(
             callback=validate_github_repository,
             help='Caller workflow GitHub repository. (e.g. "octocat/Hello-World")',
         ),
     ],
-    caller_run_id: Annotated[
+    caller_run_id: typing.Annotated[
         int, typer.Argument(help="GitHub workflow run ID (e.g. 8938022468)")
     ],
-    reusable_workflow_repository: Annotated[
+    reusable_workflow_repository: typing.Annotated[
         str,
         typer.Argument(
             help='Reusable workflow GitHub repository (e.g. "canonical/data-platform-workflows")'
         ),
     ],
-    reusable_workflow_file_name: Annotated[
+    reusable_workflow_file_name: typing.Annotated[
         str,
         typer.Argument(help='Reusable workflow file name (e.g. "build_charm.yaml")'),
     ],
-    github_api_url: Annotated[
+    github_api_url: typing.Annotated[
         str,
         typer.Argument(
             callback=parse_github_api_url,
@@ -83,7 +83,7 @@ def main(
     """
     headers = {
         "Accept": "application/vnd.github+json",
-        "X-GitHub-Api-Version": "2022-11-28",
+        "X-GitHub-Api-Version": "2026-03-10",
     }
     token = os.environ.get("GH_TOKEN")
     if token:
@@ -101,9 +101,7 @@ def main(
                 "https://docs.github.com/en/actions/security-guides/automatic-token-authentication#modifying-the-permissions-for-the-github_token"
             )
         elif exception.response.status_code == 404:
-            response = requests.get(
-                f"{github_api_url}/repos/{caller_repository}", headers=headers
-            )
+            response = requests.get(f"{github_api_url}/repos/{caller_repository}", headers=headers)
             if response.status_code == 404:
                 if token:
                     raise Exception(
@@ -112,9 +110,7 @@ def main(
                 raise Exception(
                     f"{caller_repository=} not found. If repository is private, pass `github-token` input to authenticate to GitHub"
                 )
-            raise Exception(
-                f"Workflow run not found. Check if {caller_run_id=} is valid"
-            )
+            raise Exception(f"Workflow run not found. Check if {caller_run_id=} is valid")
         raise
     all_workflows = [
         ReusableWorkflow.from_github_api(**workflow)

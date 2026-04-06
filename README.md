@@ -31,9 +31,10 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
       # Use the version. For example:
       - name: Install Python CLI
-        run: pipx install git+https://github.com/canonical/data-platform-workflows@'${{ steps.workflow-version.outputs.sha }}'#subdirectory=python/cli
-    # Only required for private repositories
+        run: pipx install git+https://github.com/canonical/data-platform-workflows@"${VAR_SHA}"#subdirectory=_cli
+        env:
+          VAR_SHA: ${{ steps.workflow-version.outputs.sha }}
     permissions:
+      # Only required for private repositories. For public repositories, use `permissions: {}`
       actions: read  # Needed for GitHub API call to get workflow version
-      
 ```

@@ -1,19 +1,29 @@
-[tool.poetry]
+[project]
 name = "get-workflow-version"
-version = "0.1.0"
+version = "0.1.0"  # Not used
 description = "Get commit SHA that GitHub Actions reusable workflow was called with"
-authors = ["Carl Csaposs <carl.csaposs@canonical.com>"]
+authors = [
+    {name = "Carl Csaposs", email = "carl.csaposs@canonical.com"}
+]
 readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "typer>=0.12.3",
+    "requests>=2.31.0",
+]
 
-[tool.poetry.scripts]
+[project.scripts]
 get-workflow-version = "get_workflow_version.main:app"
 
-[tool.poetry.dependencies]
-python = "^3.10"
-typer = "^0.12.3"
-requests = "^2.31.0"
-
+[tool.poetry]
+requires-poetry = ">=2.0"
 
 [build-system]
-requires = ["poetry-core"]
+requires = ["poetry-core>=2.0.0"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.ruff]
+line-length = 100
+
+[tool.ruff.lint]
+extend-select = ["I", "UP"]
