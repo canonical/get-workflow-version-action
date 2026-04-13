@@ -31,6 +31,13 @@ outputs:
 runs:
   using: composite
   steps:
+    - name: Install python3-venv if not available
+      shell: bash
+      run: |
+        if ! dpkg -s python3-venv &> /dev/null; then
+          sudo apt-get update
+          sudo apt-get install -y python3-venv
+        fi
     - name: Install pipx if not available
       shell: bash
       run: |
