@@ -36,7 +36,7 @@ runs:
       run: |
         if ! command -v pipx &> /dev/null; then
           sudo apt update
-          sudo apt install pipx
+          sudo DEBIAN_FRONTEND=noninteractive apt-get install pipx -y
           pipx ensurepath
         fi
     - name: Install CLI
