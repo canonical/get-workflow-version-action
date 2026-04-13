@@ -10,18 +10,18 @@ inputs:
   github-token:
     description: |
       GitHub token
-      
+
       Required for private repositories (for GitHub API call)
-      
+
       Pass `secrets.GITHUB_TOKEN` context to this input
       (https://docs.github.com/en/actions/learn-github-actions/contexts#secrets-context)
-      
+
       The job where this action is called needs
       ```
       permissions:
         actions: read
       ```
-      
+
       https://docs.github.com/en/actions/security-guides/automatic-token-authentication
     required: false
 outputs:
@@ -35,9 +35,9 @@ runs:
       shell: bash
       run: |
         if ! command -v pipx &> /dev/null; then
-          python3 -m pip install --user pipx
-          python3 -m pipx ensurepath
-          echo "${HOME}/.local/bin" >> "${GITHUB_PATH}"
+          sudo apt update
+          sudo apt install pipx
+          pipx ensurepath
         fi
     - name: Install CLI
       shell: bash
