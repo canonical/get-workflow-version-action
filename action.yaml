@@ -35,7 +35,7 @@ runs:
       shell: bash
       run: |
         if ! command -v pipx &> /dev/null; then
-          python3 -m pip --upgrade pip
+          python3 -m pip install --upgrade pip
           python3 -m pip install --user pipx
           python3 -m pipx ensurepath
           echo "${HOME}/.local/bin" >> "${GITHUB_PATH}"
