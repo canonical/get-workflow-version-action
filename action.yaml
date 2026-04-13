@@ -15,13 +15,13 @@ inputs:
       
       Pass `secrets.GITHUB_TOKEN` context to this input
       (https://docs.github.com/en/actions/learn-github-actions/contexts#secrets-context)
-
+      
       The job where this action is called needs
       ```
       permissions:
         actions: read
       ```
-
+      
       https://docs.github.com/en/actions/security-guides/automatic-token-authentication
     required: false
 outputs:
