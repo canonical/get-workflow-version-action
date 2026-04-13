@@ -31,6 +31,14 @@ outputs:
 runs:
   using: composite
   steps:
+    - name: Install pipx if not available
+      shell: bash
+      run: |
+        if ! command -v pipx &> /dev/null; then
+          python3 -m pip install --user pipx
+          python3 -m pipx ensurepath
+          echo "${HOME}/.local/bin" >> "${GITHUB_PATH}"
+        fi
     - name: Install CLI
       shell: bash
       run: pipx install "${VAR_ACTION_PATH}"
