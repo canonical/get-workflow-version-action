@@ -21,7 +21,7 @@ inputs:
       permissions:
         actions: read
       ```
-
+      
       https://docs.github.com/en/actions/security-guides/automatic-token-authentication
     required: false
 outputs:
