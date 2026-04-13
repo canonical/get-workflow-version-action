@@ -10,9 +10,9 @@ inputs:
   github-token:
     description: |
       GitHub token
-
+      
       Required for private repositories (for GitHub API call)
-
+      
       Pass `secrets.GITHUB_TOKEN` context to this input
       (https://docs.github.com/en/actions/learn-github-actions/contexts#secrets-context)
 
@@ -21,7 +21,7 @@ inputs:
       permissions:
         actions: read
       ```
-      
+
       https://docs.github.com/en/actions/security-guides/automatic-token-authentication
     required: false
 outputs:
