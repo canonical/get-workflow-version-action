@@ -35,9 +35,10 @@ runs:
       shell: bash
       run: |
         if ! command -v pipx &> /dev/null; then
-          sudo apt update
-          sudo DEBIAN_FRONTEND=noninteractive apt-get install pipx -y
-          pipx ensurepath
+          python3 -m pip --upgrade pip
+          python3 -m pip install --user pipx
+          python3 -m pipx ensurepath
+          echo "${HOME}/.local/bin" >> "${GITHUB_PATH}"
         fi
     - name: Install CLI
       shell: bash
