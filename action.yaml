@@ -31,6 +31,10 @@ outputs:
 runs:
   using: composite
   steps:
+    - name: Deprecation notice
+      shell: bash
+      run: |
+        echo '::warning::canonical/get-workflow-version-action is deprecated & no longer maintained. Use `${{ '${{ job.workflow_sha }}' }}` instead. More info: https://github.com/canonical/get-workflow-version-action/blob/main/README.md'
     - name: Install CLI
       shell: bash
       run: pipx install "${VAR_ACTION_PATH}"

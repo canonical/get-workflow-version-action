@@ -1,4 +1,51 @@
 # Get reusable workflow version
+
+> [!CAUTION]
+> This action is **deprecated** and is no longer maintained. Use `${{ job.workflow_sha }}` instead.
+> 
+> On 2026-04-23, GitHub added `job.workflow_sha`. Previously, this action provided a workaround for a limitation in GitHub. Now that GitHub supports this functionality natively, this action is no longer needed.
+> 
+> Announcement for `job.workflow_sha`: https://github.com/actions/runner/issues/2417#issuecomment-4307892505
+> 
+> Documentation for `job.workflow_sha`: https://docs.github.com/en/actions/reference/workflows-and-actions/contexts#job-context
+> 
+> As of 2026-06-23, `job.workflow_sha` is not available on GitHub Enterprise Server. While we do not plan to continue maintaining this action, users of GitHub Enterprise Server are welcome to fork this action and continue maintaining it themselves. This action is available under the Apache-2.0 license.
+> 
+> ### Example migration
+> 
+> Replace
+> ```yaml
+> jobs:
+>   foo:
+>     runs-on: ubuntu-latest
+>     steps:
+>       - name: Get workflow version
+>         id: workflow-version
+>         uses: canonical/get-workflow-version-action@v1
+>         with:
+>           repository-name: canonical/data-platform-workflows
+>           file-name: build_charm.yaml
+>           github-token: ${{ secrets.GITHUB_TOKEN }}
+>       - name: Install Python CLI
+>         run: pipx install git+https://github.com/canonical/data-platform-workflows@"${VAR_SHA}"#subdirectory=_cli
+>         env:
+>           VAR_SHA: ${{ steps.workflow-version.outputs.sha }}
+>     permissions:
+>       actions: read  # Needed for GitHub API call to get workflow version
+> ```
+> with
+> ```yaml
+> jobs:
+>   foo:
+>     runs-on: ubuntu-latest
+>     steps:
+>       - name: Install Python CLI
+>         run: pipx install git+https://github.com/canonical/data-platform-workflows@"${VAR_SHA}"#subdirectory=_cli
+>         env:
+>           VAR_SHA: ${{ job.workflow_sha }}
+>     permissions: {}
+> ```
+
 GitHub [composite action](https://docs.github.com/en/actions/creating-actions/creating-a-composite-action) to get commit SHA that GitHub Actions [reusable workflow](https://docs.github.com/en/actions/using-workflows/reusing-workflows) was called with
 
 Workaround for https://github.com/actions/toolkit/issues/1264
